@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useMemo, ReactNode } from "react";
 import { Pokemon } from "../domain/entities/Pokemon";
 
 interface FavoritesContextType {
@@ -10,11 +10,11 @@ const FavoritesContext = createContext<FavoritesContextType | undefined>(
   undefined
 );
 
-export const FavoritesProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+interface FavoritesProviderProps {
+  children: ReactNode;
+}
+
+export const FavoritesProvider = ({ children }: FavoritesProviderProps) => {
   const [favorites, setFavorites] = useState<Pokemon[]>([]);
 
   const toggleFavorite = (pokemon: Pokemon) => {
@@ -25,8 +25,13 @@ export const FavoritesProvider = ({
     );
   };
 
+  const contextValue = useMemo(
+    () => ({ favorites, toggleFavorite }),
+    [favorites]
+  );
+
   return (
-    <FavoritesContext.Provider value={{ favorites, toggleFavorite }}>
+    <FavoritesContext.Provider value={contextValue}>
       {children}
     </FavoritesContext.Provider>
   );
@@ -39,3 +44,5 @@ export const useFavorites = () => {
   }
   return context;
 };
+
+export { FavoritesContext };

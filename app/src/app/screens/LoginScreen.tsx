@@ -1,21 +1,21 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { TextInput, Button, Text } from "react-native-paper";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import firebaseConfig from "./../../../firebaseConfig";
 import { StyleSheet, View } from "react-native";
 import { handleFirebaseAuthError } from "@infrastructure/services/errorHandling";
+import { LoginScreenLabels } from "@domain/constants/Labels";
 
 const auth = getAuth(firebaseConfig);
 
 const LoginScreen = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("test@alternova.com");
+  const [password, setPassword] = useState("alternova");
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      console.log("Login exitoso!");
     } catch (error: any) {
       const errorMsg = handleFirebaseAuthError(error);
       setErrorMessage(errorMsg);
@@ -25,7 +25,7 @@ const LoginScreen = () => {
   return (
     <View style={styles.container}>
       <TextInput
-        label="Email"
+        label={LoginScreenLabels.EMAIL_INPUT}
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
@@ -33,15 +33,19 @@ const LoginScreen = () => {
         style={styles.input}
       />
       <TextInput
-        label="Password"
+        label={LoginScreenLabels.PASSWORD_INPUT}
         value={password}
         onChangeText={setPassword}
         secureTextEntry
         style={styles.input}
       />
       {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
-      <Button mode="contained" onPress={handleLogin}>
-        Log In
+      <Button
+        mode="contained"
+        onPress={handleLogin}
+        disabled={!email || !password}
+      >
+        {LoginScreenLabels.LOGIN_BUTTON}
       </Button>
     </View>
   );
