@@ -1,17 +1,16 @@
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { Appbar, ActivityIndicator, Text } from "react-native-paper";
 import { useFavorites } from "@context/useFavorites";
 import { Pokemon } from "@domain/entities/Pokemon";
 import { PokemonRepositoryImpl } from "@infrastructure/repositories/PokemonRepositoryImpl";
-import { sortElements } from "utils";
 import { HomeScreenLabels } from "@domain/constants/Labels";
 import PokemonCard from "../components/PokemonCard";
 
 export default function HomeScreen() {
-  const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
+  const { favorites, nonFavorites, toggleFavorite, setPokemonList } =
+    useFavorites();
   const [loading, setLoading] = useState(true);
-  const { favorites, toggleFavorite } = useFavorites();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,14 +26,6 @@ export default function HomeScreen() {
     };
     fetchData();
   }, []);
-
-  const nonFavorites = useMemo(
-    () =>
-      sortElements(
-        pokemonList.filter((p) => !favorites.some((f) => f.id === p.id))
-      ),
-    [pokemonList, favorites]
-  );
 
   const handleToggleFavorite = useCallback(
     (pokemon: Pokemon) => toggleFavorite(pokemon),

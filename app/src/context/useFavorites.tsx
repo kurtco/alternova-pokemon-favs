@@ -1,9 +1,19 @@
-import { createContext, useContext, useState, useMemo, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useMemo,
+  useCallback,
+  ReactNode,
+} from "react";
 import { Pokemon } from "../domain/entities/Pokemon";
+import { sortElements } from "utils";
 
 interface FavoritesContextType {
   favorites: Pokemon[];
+  nonFavorites: Pokemon[];
   toggleFavorite: (pokemon: Pokemon) => void;
+  setPokemonList: (pokemonList: Pokemon[]) => void;
 }
 
 const FavoritesContext = createContext<FavoritesContextType | undefined>(
@@ -15,19 +25,28 @@ interface FavoritesProviderProps {
 }
 
 export const FavoritesProvider = ({ children }: FavoritesProviderProps) => {
+  const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
   const [favorites, setFavorites] = useState<Pokemon[]>([]);
 
-  const toggleFavorite = (pokemon: Pokemon) => {
+  const toggleFavorite = useCallback((pokemon: Pokemon) => {
     setFavorites((prev) =>
       prev.some((p) => p.id === pokemon.id)
         ? prev.filter((p) => p.id !== pokemon.id)
         : [...prev, pokemon]
     );
-  };
+  }, []);
+
+  const nonFavorites = useMemo(
+    () =>
+      sortElements(
+        pokemonList.filter((p) => !favorites.some((f) => f.id === p.id))
+      ),
+    [pokemonList, favorites]
+  );
 
   const contextValue = useMemo(
-    () => ({ favorites, toggleFavorite }),
-    [favorites]
+    () => ({ favorites, nonFavorites, toggleFavorite, setPokemonList }),
+    [favorites, nonFavorites, toggleFavorite]
   );
 
   return (
