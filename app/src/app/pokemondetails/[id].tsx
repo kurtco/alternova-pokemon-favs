@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Stack, useLocalSearchParams } from "expo-router";
-import { View, StyleSheet, Image } from "react-native";
-import { Text, ActivityIndicator } from "react-native-paper";
+import { View, StyleSheet, Image, Text, ActivityIndicator } from "react-native";
 import { PokemonDetail } from "@domain/entities/PokemonDetail";
 import { PokemonRepositoryImpl } from "@infrastructure/repositories/PokemonRepositoryImpl";
 import { PokemonDetailsScreenLabels } from "@domain/constants/Labels";
@@ -30,8 +29,8 @@ export default function PokemonDetailsScreen() {
   if (loading) {
     return (
       <View style={styles.messageContainer}>
-        <ActivityIndicator animating={true} size="large" />
-        <Text>{PokemonDetailsScreenLabels.LOADING}</Text>
+        <ActivityIndicator size="large" color="#007AFF" />
+        <Text style={styles.text}>{PokemonDetailsScreenLabels.LOADING}</Text>
       </View>
     );
   }
@@ -39,7 +38,7 @@ export default function PokemonDetailsScreen() {
   if (!pokemon || error) {
     return (
       <View style={styles.messageContainer}>
-        <Text variant="bodyMedium" style={styles.errorText}>
+        <Text style={[styles.text, styles.errorText]}>
           {error || PokemonDetailsScreenLabels.ERROR_LOADING}
         </Text>
       </View>
@@ -50,20 +49,20 @@ export default function PokemonDetailsScreen() {
     <View style={styles.container}>
       <Stack.Screen options={{ title: pokemon.name }} />
 
-      <Text variant="titleLarge">{pokemon.name}</Text>
+      <Text style={styles.title}>{pokemon.name}</Text>
       <Image
         source={{
           uri: pokemon.sprites.other["official-artwork"].front_default,
         }}
         style={styles.image}
       />
-      <Text>
+      <Text style={styles.text}>
         {PokemonDetailsScreenLabels.HEIGHT} {pokemon.height}
       </Text>
-      <Text>
+      <Text style={styles.text}>
         {PokemonDetailsScreenLabels.WEIGHT} {pokemon.weight}
       </Text>
-      <Text>
+      <Text style={styles.text}>
         {PokemonDetailsScreenLabels.EXPERIENCE} {pokemon.base_experience}
       </Text>
     </View>
@@ -81,6 +80,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  text: {
+    fontSize: 16,
+    marginVertical: 5,
+    textAlign: "center",
   },
   errorText: {
     fontWeight: "bold",

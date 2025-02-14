@@ -3,7 +3,7 @@ import { Pokemon } from "@domain/entities/Pokemon";
 import { PokemonDetail } from "@domain/entities/PokemonDetail";
 import { PokemonListResponse } from "@domain/entities/PokemonListResponse";
 import { PokemonRepository } from "@domain/repositories/PokemonRepository";
-import { extractIdFromUrl } from "utils";
+import { extractIdFromUrl } from "../../../utils";
 
 export class PokemonRepositoryImpl implements PokemonRepository {
   async getAll(): Promise<Pokemon[]> {
