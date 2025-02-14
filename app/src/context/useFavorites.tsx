@@ -29,11 +29,13 @@ export const FavoritesProvider = ({ children }: FavoritesProviderProps) => {
   const [favorites, setFavorites] = useState<Pokemon[]>([]);
 
   const toggleFavorite = useCallback((pokemon: Pokemon) => {
-    setFavorites((prev) =>
-      prev.some((p) => p.id === pokemon.id)
+    setFavorites((prev) => {
+      const updatedFavorites = prev.some((p) => p.id === pokemon.id)
         ? prev.filter((p) => p.id !== pokemon.id)
-        : [...prev, pokemon]
-    );
+        : [...prev, pokemon];
+
+      return sortElements(updatedFavorites);
+    });
   }, []);
 
   const nonFavorites = useMemo(
