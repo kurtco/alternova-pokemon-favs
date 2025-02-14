@@ -1,4 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
+import { useRouter } from "expo-router";
+
 import { FlatList, StyleSheet, View } from "react-native";
 import { Appbar, ActivityIndicator, Text, Snackbar } from "react-native-paper";
 import { useFavorites } from "@context/useFavorites";
@@ -12,6 +14,11 @@ export default function HomeScreen() {
     useFavorites();
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const router = useRouter();
+
+  const handlePokemonDetailsPress = (id: string) => {
+    router.push(`/pokemondetails/${id}`);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,6 +79,7 @@ export default function HomeScreen() {
                 pokemon={item}
                 onToggleFavorite={handleToggleFavorite}
                 isFavorite={false}
+                onPress={(id) => handlePokemonDetailsPress(String(id))}
               />
             )}
           />
@@ -89,6 +97,7 @@ export default function HomeScreen() {
                 pokemon={item}
                 onToggleFavorite={handleToggleFavorite}
                 isFavorite={true}
+                onPress={(id) => handlePokemonDetailsPress(String(id))}
               />
             )}
           />

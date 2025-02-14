@@ -17,3 +17,11 @@ export enum LoginScreenLabels {
 export enum PokemonCardLabels {
   CARD_HEIGHT_TITLE = "Altura",
 }
+
+export enum PokemonDetailsScreenLabels {
+  HEIGHT = "Altura:",
+  WEIGHT = "Peso:",
+  EXPERIENCE = "Base Experience:",
+  LOADING = "Cargando Pokémon details...",
+  ERROR_LOADING = "Error al cargar Pokémon. Vuelve a intentarlo.",
+}

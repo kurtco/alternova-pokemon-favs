@@ -7,7 +7,12 @@ export default function RootLayout() {
   return (
     <FavoritesProvider>
       <ThemeProvider value={DefaultTheme}>
-        <Stack>
+        <Stack
+          screenOptions={{
+            headerBackTitle: "Back",
+            headerBackTitleStyle: { fontSize: 16 },
+          }}
+        >
           <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="+not-found" />
         </Stack>
