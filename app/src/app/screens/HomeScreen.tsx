@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
-import { Appbar, ActivityIndicator, Text } from "react-native-paper";
+import { Appbar, ActivityIndicator, Text, Snackbar } from "react-native-paper";
 import { useFavorites } from "@context/useFavorites";
 import { Pokemon } from "@domain/entities/Pokemon";
 import { PokemonRepositoryImpl } from "@infrastructure/repositories/PokemonRepositoryImpl";
@@ -11,6 +11,7 @@ export default function HomeScreen() {
   const { favorites, nonFavorites, toggleFavorite, setPokemonList } =
     useFavorites();
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,7 +20,11 @@ export default function HomeScreen() {
         const data = await repo.getAll();
         setPokemonList(data);
       } catch (error) {
-        console.error("Error fetching Pokémon data:", error);
+        if (error instanceof Error) {
+          setErrorMessage(error.message);
+        } else {
+          setErrorMessage(HomeScreenLabels.ERROR_LOADING);
+        }
       } finally {
         setLoading(false);
       }
@@ -46,6 +51,13 @@ export default function HomeScreen() {
       <Appbar.Header style={styles.header}>
         <Appbar.Content title={HomeScreenLabels.APP_BAR_TITLE} />
       </Appbar.Header>
+      <Snackbar
+        visible={errorMessage !== ""}
+        onDismiss={() => setErrorMessage("")}
+        duration={3000}
+      >
+        {errorMessage || HomeScreenLabels.ERROR_LOADING}
+      </Snackbar>
 
       <View style={styles.listContainer}>
         <View style={styles.halfScreen}>
