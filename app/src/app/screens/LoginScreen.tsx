@@ -5,6 +5,7 @@ import firebaseConfig from "./../../../firebaseConfig";
 import { StyleSheet, View } from "react-native";
 import { handleFirebaseAuthError } from "@infrastructure/services/errorHandling";
 import { LoginScreenLabels } from "@domain/constants/Labels";
+import * as Animatable from "react-native-animatable";
 
 const auth = getAuth(firebaseConfig);
 
@@ -24,6 +25,13 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Animatable.Text
+        animation="fadeInDown"
+        duration={1500}
+        style={styles.title}
+      >
+        {LoginScreenLabels.WELCOME}
+      </Animatable.Text>
       <TextInput
         label={LoginScreenLabels.EMAIL_INPUT}
         value={email}
@@ -41,6 +49,7 @@ const LoginScreen = () => {
       />
       {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
       <Button
+        style={styles.button}
         mode="contained"
         onPress={handleLogin}
         disabled={!email || !password}
@@ -57,6 +66,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  button: {
+    width: "100%",
   },
   input: {
     width: "100%",

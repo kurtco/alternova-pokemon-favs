@@ -9,9 +9,10 @@ export enum HomeScreenLabels {
 }
 
 export enum LoginScreenLabels {
-  LOGIN_BUTTON = "Log In",
+  LOGIN_BUTTON = "Iniciar Sesión",
   EMAIL_INPUT = "Correo",
   PASSWORD_INPUT = "Contraseña",
+  WELCOME = "Ingresa a tu Pokebola",
 }
 
 export enum PokemonCardLabels {

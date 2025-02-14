@@ -27,7 +27,7 @@ export default function PokemonCard({
     >
       <Card.Content style={styles.cardContent}>
         <IconButton
-          icon={isFavorite ? "star" : "heart-outline"}
+          icon={"star"}
           iconColor={isFavorite ? "gold" : "gray"}
           onPress={() => onToggleFavorite(pokemon)}
         />
