@@ -44,7 +44,15 @@ This is a React Native application that allows users to log in using Firebase, f
      - The **application layer** manages UI components and navigation.
 
 7. **UI Styling**:
+
    - I have used **`react-native-paper`** for styling the app. It provides a consistent and Material Design-compliant UI.
+
+8. **Commit Formatting**:
+
+   - The project follows **Conventional Commits**, ensuring clear and structured commit messages.
+
+9. **Unit Testing**:
+   - Unit tests were implemented using **React Native Testing Library**, ensuring application reliability.
 
 ## Key Components
 
